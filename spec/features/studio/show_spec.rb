@@ -6,12 +6,17 @@ RSpec.describe 'studio show page' do
     @movie_1 = @big.movies.create!(title: 'movie 1', creation_year: 1995)
     @movie_2 = @big.movies.create!(title: 'movie 2', creation_year: 1999)
     @movie_3 = @big.movies.create!(title: 'movie 3', creation_year: 2007)
+    @ted = Actor.create!(name: 'Ted Licious', age: 1, currently_working: true)
+    @brittany = Actor.create!(name: 'Brittany Counts', age: 36, currently_working: true)
+    @caleb = Actor.create!(name: 'Caleb Notouch', age: 37, currently_working: false)
+    FilmRelation.create!(movie_id: @movie_1.id, actor_id: @ted.id)
+    FilmRelation.create!(movie_id: @movie_1.id, actor_id: @brittany.id)
+    FilmRelation.create!(movie_id: @movie_1.id, actor_id: @caleb.id)
 
     @rainer = Studio.create!(name: 'Rainer Films', location: 'Seattle')
     @movie_4 = @rainer.movies.create!(title: 'movie 4', creation_year: 2019)
     @movie_5 = @rainer.movies.create!(title: 'movie 5', creation_year: 2017)
     @movie_6 = @rainer.movies.create!(title: 'movie 6', creation_year: 2018)
-    @movie_7 = @rainer.movies.create!(title: 'movie 7', creation_year: 2021)
   end
 
   it 'can show studios attributes and movies' do
@@ -28,6 +33,22 @@ RSpec.describe 'studio show page' do
     expect(page).to_not have_content("#{@movie_4.title}")
     expect(page).to_not have_content("#{@movie_5.title}")
     expect(page).to_not have_content("#{@movie_6.title}")
-    expect(page).to_not have_content("#{@movie_7.title}")
+  end
+
+  it 'can show actors attributes if they are currently working' do
+    visit "/studios/#{@big.id}"
+
+    expect(page).to have_content(@ted.name)
+    expect(page).to have_content(@ted.age)
+
+    expect(page).to_not have_content(@caleb.name)
+    expect(page).to_not have_content(@caleb.age)
   end
 end
+
+# As a user,
+# When I visit a studio show page
+# I see a list of actors that have acted in any of the studios movies
+# And I see that the list of actors is unique (no duplicate actors)
+# And I see that the list of actors is ordered from oldest actor to youngest
+# And I see that the list of actors only includes actors that are currently working

@@ -5,5 +5,12 @@
 <% @movies.each do |movie| %>
   <ul>
     <li><%= movie.title %></li>
+      <h4>Actors:</h4>
+      <% movie.age_sort.each do |actor| %>
+        <% if actor.currently_working == true %>
+          <%= actor.name %>
+          <%= actor.age %>
+        <% end %>
+      <% end %>
   </ul>
 <% end %>
