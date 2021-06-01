@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe 'studio show page' do
   before :each do
     @big = Studio.create!(name: 'The Big Time Studio', location: 'Tacoma')
-    @movie_1 = @big.movies.create!(title: 'movie 1', creation_year: 1995)
-    @movie_2 = @big.movies.create!(title: 'movie 2', creation_year: 1999)
-    @movie_3 = @big.movies.create!(title: 'movie 3', creation_year: 2007)
+    @movie_1 = @big.movies.create!(title: 'movie 1', creation_year: 1995, genre: 'horror')
+    @movie_2 = @big.movies.create!(title: 'movie 2', creation_year: 1999, genre: 'comedy')
+    @movie_3 = @big.movies.create!(title: 'movie 3', creation_year: 2007, genre: 'action')
     @ted = Actor.create!(name: 'Ted Licious', age: 1, currently_working: true)
     @brittany = Actor.create!(name: 'Brittany Counts', age: 36, currently_working: true)
     @caleb = Actor.create!(name: 'Caleb Notouch', age: 37, currently_working: false)
@@ -45,10 +45,3 @@ RSpec.describe 'studio show page' do
     expect(page).to_not have_content(@caleb.age)
   end
 end
-
-# As a user,
-# When I visit a studio show page
-# I see a list of actors that have acted in any of the studios movies
-# And I see that the list of actors is unique (no duplicate actors)
-# And I see that the list of actors is ordered from oldest actor to youngest
-# And I see that the list of actors only includes actors that are currently working
